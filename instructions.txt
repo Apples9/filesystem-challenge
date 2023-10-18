@@ -1,0 +1,70 @@
+The file system game
+====================
+
+Overview
+--------
+
+In this challenge you will need to extract data from a mock filesystem. This filesystem has a lot of similarities to the old
+dos FAT16 file system, but it's different enough that you will need to write your own tools for finding files and extracting data. 
+Don't worry, it's easy to extract data... I had the hard job!
+
+Important sizes:
+    BLOCK_SIZE = 2048
+    BLOCK_COUNT = 256
+
+Basic Layout:
+    BLOCK 0      - Used Block Bitmap
+    BLOCK 1..3   - File Allocation Table
+    BLOCK 4..255 - Data blocks
+
+
+FAT Entries
+-----------
+Entries in the FAT are in the format:
+[nnnnnnnnn][ssss][block list...]\0
+     |        |        |
+     |        |        `--- list of block numbers (1 byte each, \0 terminates the list)
+     |        |
+     |        `------------ size of the file in bytes, (32 bit little endian)
+     |
+      `-------------------- name of the file (8 bytes, padded with \0)
+
+The end of the FAT is marked with \0
+
+
+
+You are here
+------------
+
+You are currently looking at the data for "info.txt".
+
+You can see the FAT entry for "info.txt" at offset 2048 (the first FAT entry) in the filesystem.
+
+If you look at the block list for "info.txt" you will see it only uses 1 block (block 4 of the file system).
+
+The data (that you are reading now) is stored in block 4. Block 4 starts at position 4 * BLOCK_SIZE (8192) in the filesystem.
+
+It's not too hard to find your way around, especially with "info.txt" to act as a guide.
+
+I wonder what came first... this file... or the file system?!
+
+
+
+Instructions
+------------
+
+Extract the file "ppp.png" and view it, that will tell you the two names you need.
+
+
+Tips
+----
+
+So this is *meant* to be a hard one.
+
+You will need to find the FAT entry for "ppp.png", determine the block list and file size, then you will need to extract the data and reassemble the file.
+
+Try using "info.txt" to test your code with, since it's plain text and easy to tell if your code is working.
+
+Good luck
+
+- Tartare
